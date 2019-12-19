@@ -1,0 +1,19 @@
+.wp-block-ganonpress-draw {
+	background-color: #fff;
+	border: 1px solid #000;
+	height: 500px;
+	position: relative;
+	overflow: hidden;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.wp-block-ganonpress-draw-brush {
+	position: absolute;
+	width: 50px;
+	margin-left: -25px;
+	margin-top: -24px;
+}
