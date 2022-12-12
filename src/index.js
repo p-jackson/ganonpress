@@ -2,7 +2,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import { __ as translate } from '@wordpress/i18n';
 import { createRef, useState } from '@wordpress/element';
 
-const __ = text => translate( text, 'ganonpress' );
+const __ = ( text ) => translate( text, 'ganonpress' );
 
 const BRUSH_URL = '/wp-content/plugins/ganonpress/brush.png';
 
@@ -22,7 +22,10 @@ registerBlockType( 'ganonpress/draw', {
 	 * This is a short description for your block, can be translated with `i18n` functions.
 	 * It will be shown in the Block Tab in the Settings Sidebar.
 	 */
-	description: __( 'Draw a picture for your visitors using the GanonBrush', 'ganonpress' ),
+	description: __(
+		'Draw a picture for your visitors using the GanonBrush',
+		'ganonpress'
+	),
 
 	/**
 	 * Blocks are grouped into categories to help users browse and discover them.
@@ -57,7 +60,10 @@ registerBlockType( 'ganonpress/draw', {
 	 *
 	 * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
 	 *
-	 * @param {Object} [props] Properties passed from the editor.
+	 * @param {Object}   [props]             Properties passed from the editor.
+	 * @param {Function} props.setAttributes
+	 * @param {string}   props.className
+	 * @param {Object}   props.attributes
 	 *
 	 * @return {WPElement} Element to render.
 	 */
@@ -80,6 +86,8 @@ registerBlockType( 'ganonpress/draw', {
 	 * The save function defines the way in which the different attributes should be combined
 	 * into the final markup, which is then serialized by the block editor into `post_content`.
 	 *
+	 * @param {Object} [root0]
+	 * @param {Object} root0.attributes
 	 * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#save
 	 *
 	 * @return {WPElement} Element to render.
@@ -98,6 +106,7 @@ function Canvas( { positions } ) {
 		<>
 			{ positions.map( ( { x, y }, index ) => (
 				<img
+					alt=""
 					key={ index }
 					className="wp-block-ganonpress-draw-brush"
 					src={ BRUSH_URL }
@@ -112,14 +121,14 @@ function Clicker( { children, className, addStroke } ) {
 	const [ mouseDown, setMouseDown ] = useState( false );
 
 	const offset = createRef();
-	const getOffset = el => {
+	const getOffset = ( el ) => {
 		if ( el ) {
 			const { x, y, width, height } = el.getBoundingClientRect();
 			offset.current = { x, y, width, height };
 		}
 	};
 
-	const handlePointerMove = e => {
+	const handlePointerMove = ( e ) => {
 		if ( ! mouseDown ) {
 			return;
 		}
@@ -129,7 +138,7 @@ function Clicker( { children, className, addStroke } ) {
 		addStroke( x, y );
 	};
 
-	const handlePointerDown = e => {
+	const handlePointerDown = ( e ) => {
 		e.target.setPointerCapture( e.pointerId );
 		setMouseDown( true );
 
@@ -138,7 +147,7 @@ function Clicker( { children, className, addStroke } ) {
 		addStroke( x, y );
 	};
 
-	const handlePointerUp = e => {
+	const handlePointerUp = ( e ) => {
 		e.target.releasePointerCapture( e.pointerId );
 		setMouseDown( false );
 	};
